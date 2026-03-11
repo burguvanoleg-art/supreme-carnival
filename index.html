@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burguvan Oleg | Portfolio</title>
+    <style>
+        :root {
+            --teal: #44A194;
+            --cream: #F4F0E4;
+            --blue: #537D96;
+            --coral: #EC8F8D;
+            --text-dark: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--cream);
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: var(--teal);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: -3rem auto 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--cream);
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2.5rem; color: var(--blue); }
+        .subtitle { font-size: 1.2rem; color: var(--teal); font-weight: bold; margin-bottom: 1rem; }
+
+        section {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        h2 {
+            border-bottom: 3px solid var(--coral);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: var(--blue);
+        }
+
+        .summary {
+            font-style: italic;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--teal);
+            border-radius: 0 5px 5px 0;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .job-title { font-weight: bold; color: var(--blue); font-size: 1.1rem; }
+        .company-date { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .skill-item {
+            background: var(--blue);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: var(--blue);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .contact-info a {
+            color: var(--coral);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 2rem 1rem; }
+            .profile-container { margin-top: -2rem; width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Burguvan Oleg</h1>
+    <p class="subtitle">Travel Advisor & Sales Professional</p>
+</header>
+
+<div class="profile-container">
+    <img src="image1.png" alt="Burguvan Oleg" class="profile-img">
+    <div class="contact-info">
+        <p>Chisinau, Moldova | 068952793</p>
+        <p><a href="mailto:burguvan.oleg@gmail.com">burguvan.oleg@gmail.com</a></p>
+    </div>
+</div>
+
+<section>
+    <p class="summary">
+        "Results-driven Travel Advisor with a strong background in sales, customer service, and client relationship management. 
+        I combine emotional intelligence with persuasive storytelling to deliver exceptional, tailored travel experiences."
+    </p>
+
+    <h2>Work Experience</h2>
+    
+    <div class="card">
+        <div class="job-title">Travel Advisor</div>
+        <div class="company-date">TravelBusinessLLC | 2022 – Present</div>
+        <ul>
+            <li>Drive full-cycle sales of customized travel packages and itineraries.</li>
+            <li>Utilize active listening to assess client needs and budgets.</li>
+            <li>Apply persuasive storytelling to close high-value sales.</li>
+            <li>Negotiate with partners for the best client rates.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="job-title">Travel Agent</div>
+        <div class="company-date">International Travel Network | 2020 – 2022</div>
+        <ul>
+            <li>Managed high-volume inbound and outbound sales calls.</li>
+            <li>Guided clients through flight and accommodation bookings.</li>
+            <li>Consistently exceeded monthly performance metrics.</li>
+        </ul>
+    </div>
+
+    <h2>Education</h2>
+    <div class="card">
+        <div class="job-title">Degree in Economics</div>
+        <div class="company-date">Academia de Studii Economice din Moldova (ASEM) | Graduated 2021</div>
+    </div>
+
+    <h2>Core Competencies</h2>
+    <div class="skills-grid">
+        <div class="skill-item">B2C Sales</div>
+        <div class="skill-item">Active Listening</div>
+        <div class="skill-item">Emotional Intelligence</div>
+        <div class="skill-item">Storytelling</div>
+        <div class="skill-item">Negotiation</div>
+        <div class="skill-item">Goal-Oriented</div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Burguvan Oleg. Built with passion for travel and fitness.</p>
+</footer>
+
+</body>
+</html>
