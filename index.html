@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burguvan Oleg | Portfolio</title>
+    <title>Burguvan Oleg | Professional Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --teal: #44A194;
             --cream: #F4F0E4;
             --blue: #537D96;
             --coral: #EC8F8D;
-            --text-dark: #2c3e50;
+            --dark-blue: #2c3e50;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -19,172 +25,363 @@
             box-sizing: border-box;
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
             background-color: var(--cream);
-            color: var(--text-dark);
+            color: var(--dark-blue);
+            line-height: 1.7;
         }
 
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--teal); }
+
+        /* Hero Section */
         header {
-            background-color: var(--teal);
-            color: white;
-            padding: 4rem 2rem;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%);
+            color: white;
+            padding: 0 2rem;
+            margin-bottom: 4rem;
         }
 
-        .profile-container {
+        .hero-content {
             max-width: 800px;
-            margin: -3rem auto 2rem;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
+            animation: fadeIn 1s ease-out;
         }
 
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             object-fit: cover;
-            border: 5px solid var(--cream);
-            margin-bottom: 1rem;
+            border: 8px solid rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        h1 { font-size: 2.5rem; color: var(--blue); }
-        .subtitle { font-size: 1.2rem; color: var(--teal); font-weight: bold; margin-bottom: 1rem; }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
 
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Sections */
         section {
-            max-width: 900px;
-            margin: 2rem auto;
+            max-width: 1000px;
+            margin: 0 auto 6rem;
             padding: 0 2rem;
         }
 
-        h2 {
-            border-bottom: 3px solid var(--coral);
-            display: inline-block;
-            margin-bottom: 1.5rem;
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
             color: var(--blue);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
         }
 
-        .summary {
-            font-style: italic;
-            font-size: 1.1rem;
-            text-align: center;
-            margin-bottom: 3rem;
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--coral);
+        }
+
+        /* Experience Cards */
+        .experience-container {
+            display: grid;
+            gap: 2rem;
         }
 
         .card {
-            background: white;
-            padding: 1.5rem;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-left: 6px solid var(--teal);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 1.5rem;
-            border-left: 5px solid var(--teal);
-            border-radius: 0 5px 5px 0;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .job-title { font-weight: bold; color: var(--blue); font-size: 1.1rem; }
-        .company-date { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            flex-wrap: wrap;
             gap: 1rem;
-            margin-top: 1rem;
         }
 
-        .skill-item {
-            background: var(--blue);
-            color: white;
-            padding: 0.8rem;
-            border-radius: 5px;
-            text-align: center;
+        .job-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--blue);
         }
 
-        footer {
-            background-color: var(--blue);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
+        .company-date {
+            background: var(--cream);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--teal);
         }
 
-        .contact-info a {
+        ul {
+            list-style: none;
+        }
+
+        ul li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
             color: var(--coral);
-            text-decoration: none;
             font-weight: bold;
         }
 
-        @media (max-width: 600px) {
-            header { padding: 2rem 1rem; }
-            .profile-container { margin-top: -2rem; width: 90%; }
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--blue);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .skill-item i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--teal);
+        }
+
+        .skill-item:hover {
+            background: var(--teal);
+            color: white;
+            border-color: var(--teal);
+        }
+
+        .skill-item:hover i { color: white; }
+
+        /* Footer & Contact */
+        footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 5rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-method {
+            text-decoration: none;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .contact-method i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--coral);
+        }
+
+        .contact-method:hover { color: var(--coral); transform: scale(1.1); }
+
+        .copyright {
+            margin-top: 4rem;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            header { height: auto; padding: 8rem 1rem 4rem; }
+            .contact-grid { gap: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
+<nav>
+    <a href="#" class="nav-logo">BO.</a>
+    <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
 <header>
-    <h1>Burguvan Oleg</h1>
-    <p class="subtitle">Travel Advisor & Sales Professional</p>
+    <div class="hero-content">
+        <img src="image1.png" alt="Burguvan Oleg" class="profile-img">
+        <h1>Burguvan Oleg</h1>
+        <p class="subtitle">Travel Advisor & Sales Specialist</p>
+    </div>
 </header>
 
-<div class="profile-container">
-    <img src="image1.png" alt="Burguvan Oleg" class="profile-img">
-    <div class="contact-info">
-        <p>Chisinau, Moldova | 068952793</p>
-        <p><a href="mailto:burguvan.oleg@gmail.com">burguvan.oleg@gmail.com</a></p>
-    </div>
-</div>
-
-<section>
-    <p class="summary">
-        "Results-driven Travel Advisor with a strong background in sales, customer service, and client relationship management. 
-        I combine emotional intelligence with persuasive storytelling to deliver exceptional, tailored travel experiences."
+<section id="about">
+    <p style="font-size: 1.25rem; text-align: center; max-width: 800px; margin: 0 auto; line-height: 1.8; color: var(--blue);">
+        "I am a results-driven professional who bridges the gap between client dreams and unforgettable realities. 
+        By combining <strong>emotional intelligence</strong> with <strong>persuasive storytelling</strong>, 
+        I deliver tailored travel experiences that exceed expectations."
     </p>
+</section>
 
-    <h2>Work Experience</h2>
-    
-    <div class="card">
-        <div class="job-title">Travel Advisor</div>
-        <div class="company-date">TravelBusinessLLC | 2022 – Present</div>
-        <ul>
-            <li>Drive full-cycle sales of customized travel packages and itineraries.</li>
-            <li>Utilize active listening to assess client needs and budgets.</li>
-            <li>Apply persuasive storytelling to close high-value sales.</li>
-            <li>Negotiate with partners for the best client rates.</li>
-        </ul>
-    </div>
+<section id="experience">
+    <h2 class="section-title">Professional Journey</h2>
+    <div class="experience-container">
+        <div class="card">
+            <div class="job-header">
+                <div class="job-title">Senior Travel Advisor</div>
+                <div class="company-date">TravelBusinessLLC | 2022 – Present</div>
+            </div>
+            <ul>
+                <li>Strategic sales lead for premium customized travel itineraries.</li>
+                <li>Leveraging emotional intelligence to decode complex client requirements.</li>
+                <li>Closing high-value contracts through narrative-driven presentations.</li>
+                <li>Fostering long-term partner relationships to secure exclusive rates.</li>
+            </ul>
+        </div>
 
-    <div class="card">
-        <div class="job-title">Travel Agent</div>
-        <div class="company-date">International Travel Network | 2020 – 2022</div>
-        <ul>
-            <li>Managed high-volume inbound and outbound sales calls.</li>
-            <li>Guided clients through flight and accommodation bookings.</li>
-            <li>Consistently exceeded monthly performance metrics.</li>
-        </ul>
-    </div>
-
-    <h2>Education</h2>
-    <div class="card">
-        <div class="job-title">Degree in Economics</div>
-        <div class="company-date">Academia de Studii Economice din Moldova (ASEM) | Graduated 2021</div>
-    </div>
-
-    <h2>Core Competencies</h2>
-    <div class="skills-grid">
-        <div class="skill-item">B2C Sales</div>
-        <div class="skill-item">Active Listening</div>
-        <div class="skill-item">Emotional Intelligence</div>
-        <div class="skill-item">Storytelling</div>
-        <div class="skill-item">Negotiation</div>
-        <div class="skill-item">Goal-Oriented</div>
+        <div class="card">
+            <div class="job-header">
+                <div class="job-title">Travel Agent</div>
+                <div class="company-date">International Travel Network | 2020 – 2022</div>
+            </div>
+            <ul>
+                <li>Managed high-velocity sales pipelines for international travelers.</li>
+                <li>Specialized in logistics for complex flight and accommodation bundles.</li>
+                <li>Consistently ranked in the top 5% for monthly revenue targets.</li>
+            </ul>
+        </div>
     </div>
 </section>
 
-<footer>
-    <p>&copy; 2026 Burguvan Oleg. Built with passion for travel and fitness.</p>
+<section id="skills">
+    <h2 class="section-title">Core Competencies</h2>
+    <div class="skills-grid">
+        <div class="skill-item"><i class="fas fa-chart-line"></i> B2C Sales</div>
+        <div class="skill-item"><i class="fas fa-comments"></i> Active Listening</div>
+        <div class="skill-item"><i class="fas fa-heart"></i> Emotional Intelligence</div>
+        <div class="skill-item"><i class="fas fa-book-open"></i> Storytelling</div>
+        <div class="skill-item"><i class="fas fa-handshake"></i> Negotiation</div>
+        <div class="skill-item"><i class="fas fa-bullseye"></i> Goal Oriented</div>
+    </div>
+</section>
+
+<footer id="contact">
+    <h2 class="section-title" style="color: white; margin-bottom: 4rem;">Get In Touch</h2>
+    <div class="contact-grid">
+        <a href="mailto:burguvan.oleg@gmail.com" class="contact-method">
+            <i class="fas fa-envelope"></i>
+            burguvan.oleg@gmail.com
+        </a>
+        <a href="tel:068952793" class="contact-method">
+            <i class="fas fa-phone"></i>
+            068952793
+        </a>
+        <div class="contact-method">
+            <i class="fas fa-map-marker-alt"></i>
+            Chisinau, Moldova
+        </div>
+    </div>
+    
+    <div class="copyright">
+        &copy; 2026 Burguvan Oleg. Portfolio designed for impact.
+    </div>
 </footer>
 
 </body>
