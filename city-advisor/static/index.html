@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Activity Advisor Wizard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>City Advisor Wizard</h1>
+            <p id="stepDescription">Step 1: Choose your destination</p>
+        </header>
+
+        <main id="wizardContent">
+            <!-- Step 1: City Selection -->
+            <section id="step1" class="wizard-step">
+                <div class="input-wrapper">
+                    <input type="text" id="cityInput" placeholder="Which city are you visiting?" autocomplete="off">
+                    <button id="cityNextBtn">Next</button>
+                </div>
+            </section>
+
+            <!-- Step 2: Forecast Selection -->
+            <section id="step2" class="wizard-step hidden">
+                <div id="forecastContainer" class="forecast-grid">
+                    <!-- Forecast cards will be injected here -->
+                </div>
+                <div class="step-nav">
+                    <button class="backBtn">Back</button>
+                </div>
+            </section>
+
+            <!-- Step 3: Popular Venues -->
+            <section id="step3" class="wizard-step hidden">
+                <h3>Popular in <span id="displayCity"></span></h3>
+                <div id="venuesContainer" class="venues-wizard-grid">
+                    <!-- Venue cards will be injected here -->
+                </div>
+                <div class="step-nav">
+                    <button class="backBtn">Back</button>
+                    <button id="venueNextBtn">Next</button>
+                </div>
+            </section>
+
+            <!-- Step 4: Final Intent -->
+            <section id="step4" class="wizard-step hidden">
+                <div class="input-wrapper">
+                    <input type="text" id="intentInput" placeholder="What would you like to do there?" autocomplete="off">
+                    <button id="finalNextBtn">Get Advice</button>
+                </div>
+                <div class="step-nav">
+                    <button class="backBtn">Back</button>
+                </div>
+            </section>
+
+            <!-- Result Step -->
+            <section id="resultStep" class="wizard-step hidden">
+                <div id="finalResult" class="card recommendation-card">
+                    <h3>Your Personalized Plan</h3>
+                    <div id="recommendationText" class="card-content"></div>
+                </div>
+                <button id="restartBtn">Start Over</button>
+            </section>
+
+            <div id="errorBox" class="error-box hidden"></div>
+            <div id="loadingOverlay" class="loading-overlay hidden">
+                <div class="spinner"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by Google Gemini & Open-Meteo API</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

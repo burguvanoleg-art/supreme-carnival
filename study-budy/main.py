@@ -2,6 +2,8 @@ import os
 import requests
 from typing import Dict, Any, List
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -9,6 +11,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(title="Study-Buddy API")
+
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Serving the frontend
+@app.get("/", include_in_schema=False)
+async def serve_frontend():
+    return FileResponse("frontend/index.html")
 
 # Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -61,14 +77,43 @@ async def simplify_text(request: StudyText) -> Dict[str, Any]:
 @app.post("/quiz")
 async def generate_quiz(request: StudyText) -> Dict[str, Any]:
     """
-    Generates 3-5 quiz questions based on the provided text.
+    Generates 20 True/False quiz questions in JSON format with explanations.
     """
     try:
-        prompt = f"Based on the following text, generate 3-5 quiz questions to test comprehension. Provide answers at the end:\n\n{request.text}"
-        quiz = call_gemini(prompt)
-        return {"status": "ok", "data": quiz}
+        prompt = (
+            f"Based on the following text, generate exactly 20 True/False questions to test comprehension. "
+            f"Return ONLY a JSON array of objects. Each object MUST have:\n"
+            f"1. 'question': the statement\n"
+            f"2. 'answer': the string 'True' or 'False'\n"
+            f"3. 'explanation': a brief sentence explaining why the answer is correct based on the text.\n\n"
+            f"Text: {request.text}"
+        )
+        # We need to strip potential markdown code blocks from the AI response
+        raw_response = call_gemini(prompt)
+        json_str = raw_response.strip()
+        if json_str.startswith("```json"):
+            json_str = json_str[7:-3]
+        elif json_str.startswith("```"):
+            json_str = json_str[3:-3]
+        
+        import json
+        quiz_data = json.loads(json_str)
+        
+        # Cleanup symbols and normalize answers
+        for item in quiz_data:
+            # Ensure answer is exactly 'True' or 'False' (strip markdown like **True**)
+            if "True" in item.get("answer", ""):
+                item["answer"] = "True"
+            elif "False" in item.get("answer", ""):
+                item["answer"] = "False"
+            
+            # Strip markdown bold/italic from explanations
+            if "explanation" in item:
+                item["explanation"] = item["explanation"].replace("**", "").replace("*", "").replace("_", "").strip()
+
+        return {"status": "ok", "data": quiz_data}
     except Exception as e:
-        return {"status": "error", "data": str(e)}
+        return {"status": "error", "data": f"Failed to generate structured quiz: {str(e)}"}
 
 @app.post("/follow-up")
 async def answer_follow_up(request: FollowUpRequest) -> Dict[str, Any]:

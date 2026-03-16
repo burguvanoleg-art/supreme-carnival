@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Buddy | Simplify & Learn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-secondary { background-color: white; color: var(--primary); border: 1px solid var(--primary); }
+        .btn-secondary:hover { background-color: #eff6ff; }
+        .btn-success { background-color: var(--success); color: white; }
+        
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        #results, #quizContainer {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-content { white-space: pre-wrap; margin-bottom: 1.5rem; }
+
+        /* Follow-up Section */
+        .follow-up-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px dashed var(--border);
+        }
+        .follow-up-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .follow-up-input-group input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Quiz Specifics */
+        .quiz-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .quiz-item:last-child { border-bottom: none; }
+        .quiz-question { font-weight: 500; margin-bottom: 1rem; }
+        .quiz-options { display: flex; gap: 1rem; }
+        
+        .opt-btn {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .opt-btn.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .feedback {
+            margin-top: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .correct { color: var(--success); }
+        .incorrect { color: var(--error); }
+
+        #scoreDisplay {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f0f9ff;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px; height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-msg {
+            display: none;
+            background-color: #fef2f2;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #fee2e2;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Study Buddy</h1>
+        <p class="subtitle">Your AI companion for simplifying complex topics</p>
+    </header>
+
+    <div class="card" id="inputCard">
+        <label for="studyText">Paste your text below:</label>
+        <textarea id="studyText" placeholder="Paste complex articles, textbook passages, or notes here..."></textarea>
+        
+        <div id="errorBox" class="error-msg"></div>
+
+        <div class="button-group">
+            <button id="simplifyBtn" class="btn-primary">
+                <span class="loading-spinner" id="simplifySpinner"></span>
+                Simplify Text
+            </button>
+            <button id="quizBtn" class="btn-secondary">
+                <span class="loading-spinner" id="quizSpinner" style="border-top-color: var(--primary);"></span>
+                Take 20-Question Quiz
+            </button>
+        </div>
+    </div>
+
+    <!-- Simplified Text Result -->
+    <div id="results" class="card">
+        <h2 id="resultTitle" style="margin-bottom: 1rem;">Simplified Explanation</h2>
+        <div id="resultContent" class="result-content"></div>
+        
+        <div class="follow-up-section">
+            <label for="followUpInput">Have a question about this?</label>
+            <div id="followUpError" class="error-msg" style="margin-top: 1rem;"></div>
+            <div class="follow-up-input-group">
+                <input type="text" id="followUpInput" placeholder="Ask a follow-up question...">
+                <button id="followUpBtn" class="btn-primary" style="padding: 0.5rem 1rem;">
+                    <span class="loading-spinner" id="followUpSpinner"></span>
+                    Ask
+                </button>
+            </div>
+            <div id="followUpAnswer" class="result-content" style="margin-top: 1.5rem; font-style: italic; color: var(--primary);"></div>
+        </div>
+
+        <button onclick="window.location.reload()" class="btn-secondary" style="margin-top: 2rem;">Back to Start</button>
+    </div>
+
+    <!-- Interactive Quiz -->
+    <div id="quizContainer" class="card">
+        <h2 style="margin-bottom: 1.5rem;">Interactive Quiz (20 Questions)</h2>
+        <div id="quizList"></div>
+        <div id="scoreDisplay"></div>
+        <div class="button-group" style="margin-top: 2rem;">
+            <button id="submitQuizBtn" class="btn-primary" disabled>Submit Answers</button>
+            <button onclick="window.location.reload()" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = window.location.origin === 'null' ? 'http://localhost:8000' : '';
+    let quizData = [];
+    let userAnswers = {};
+
+    const studyText = document.getElementById('studyText');
+    const simplifyBtn = document.getElementById('simplifyBtn');
+    const quizBtn = document.getElementById('quizBtn');
+    const errorBox = document.getElementById('errorBox');
+    
+    const resultsArea = document.getElementById('results');
+    const resultContent = document.getElementById('resultContent');
+    
+    const quizContainer = document.getElementById('quizContainer');
+    const quizList = document.getElementById('quizList');
+    const submitQuizBtn = document.getElementById('submitQuizBtn');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const inputCard = document.getElementById('inputCard');
+    const followUpInput = document.getElementById('followUpInput');
+    const followUpBtn = document.getElementById('followUpBtn');
+    const followUpAnswer = document.getElementById('followUpAnswer');
+    const followUpError = document.getElementById('followUpError');
+    const followUpSpinner = document.getElementById('followUpSpinner');
+
+    function showError(msg) {
+        errorBox.innerText = msg;
+        errorBox.style.display = 'block';
+    }
+
+    simplifyBtn.onclick = async () => {
+        const text = studyText.value.trim();
+        if (!text) return showError('Please paste some text first.');
+        
+        const spinner = document.getElementById('simplifySpinner');
+        spinner.style.display = 'block';
+        simplifyBtn.disabled = true;
+        errorBox.style.display = 'none';
+
+        try {
+            const response = await fetch(`${API_BASE}/simplify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            if (result.status === 'ok') {
+                resultContent.innerText = result.data;
+                inputCard.style.display = 'none';
+                resultsArea.style.display = 'block';
+                // Store context for follow-up
+                resultsArea.dataset.context = text;
+            } else {
+                showError(result.data);
+            }
+        } catch (err) {
+            showError('Connection error.');
+        } finally {
+            spinner.style.display = 'none';
+            simplifyBtn.disabled = false;
+        }
+    };
+
+    followUpBtn.onclick = async () => {
+        const question = followUpInput.value.trim();
+        const context_text = resultsArea.dataset.context;
+        if (!question) return;
+
+        followUpSpinner.style.display = 'block';
+        followUpBtn.disabled = true;
+        followUpError.style.display = 'none';
+        followUpAnswer.innerText = 'Thinking...';
+
+        try {
+            const response = await fetch(`${API_BASE}/follow-up`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ context_text, question })
+            });
+            const result = await response.json();
+            if (result.status === 'ok') {
+                followUpAnswer.innerText = result.data;
+            } else {
+                followUpError.innerText = result.data;
+                followUpError.style.display = 'block';
+                followUpAnswer.innerText = '';
+            }
+        } catch (err) {
+            followUpError.innerText = 'Connection error.';
+            followUpError.style.display = 'block';
+            followUpAnswer.innerText = '';
+        } finally {
+            followUpSpinner.style.display = 'none';
+            followUpBtn.disabled = false;
+        }
+    };
+
+    // Enter key support for follow-up
+    followUpInput.onkeypress = (e) => {
+        if (e.key === 'Enter') followUpBtn.click();
+    };
+
+    quizBtn.onclick = async () => {
+        const text = studyText.value.trim();
+        if (!text) return showError('Please paste some text first.');
+
+        const spinner = document.getElementById('quizSpinner');
+        spinner.style.display = 'block';
+        quizBtn.disabled = true;
+        errorBox.style.display = 'none';
+
+        try {
+            const response = await fetch(`${API_BASE}/quiz`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            if (result.status === 'ok') {
+                quizData = result.data;
+                renderQuiz();
+                inputCard.style.display = 'none';
+                quizContainer.style.display = 'block';
+            } else {
+                showError(result.data);
+            }
+        } catch (err) {
+            showError('Connection error.');
+        } finally {
+            spinner.style.display = 'none';
+            quizBtn.disabled = false;
+        }
+    };
+
+    function renderQuiz() {
+        quizList.innerHTML = '';
+        userAnswers = {};
+        quizData.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'quiz-item';
+            div.innerHTML = `
+                <div class="quiz-question">${index + 1}. ${item.question}</div>
+                <div class="quiz-options">
+                    <button class="opt-btn" onclick="selectOption(${index}, 'True', this)">True</button>
+                    <button class="opt-btn" onclick="selectOption(${index}, 'False', this)">False</button>
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            quizList.appendChild(div);
+        });
+    }
+
+    window.selectOption = (qIndex, value, btn) => {
+        // Highlight selection
+        const siblings = btn.parentElement.querySelectorAll('.opt-btn');
+        siblings.forEach(s => s.classList.remove('selected'));
+        btn.classList.add('selected');
+        
+        userAnswers[qIndex] = value;
+        
+        // Enable submit if all answered
+        if (Object.keys(userAnswers).length === quizData.length) {
+            submitQuizBtn.disabled = false;
+        }
+    };
+
+    submitQuizBtn.onclick = () => {
+        let score = 0;
+        quizData.forEach((item, index) => {
+            const feedback = document.getElementById(`feedback-${index}`);
+            const isCorrect = userAnswers[index] === item.answer;
+            if (isCorrect) score++;
+            
+            let feedbackHTML = `<div class="${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'Correct!' : `Incorrect. The answer is ${item.answer}.`}</div>`;
+            
+            if (!isCorrect && item.explanation) {
+                feedbackHTML += `
+                    <details style="margin-top: 0.5rem; cursor: pointer; color: var(--text-muted); font-size: 0.85rem;">
+                        <summary style="font-weight: 600; outline: none;">See why</summary>
+                        <div style="padding: 0.5rem; background: #f8fafc; border-radius: 4px; border: 1px solid var(--border); margin-top: 0.2rem;">
+                            ${item.explanation}
+                        </div>
+                    </details>
+                `;
+            }
+            
+            feedback.innerHTML = feedbackHTML;
+            feedback.style.display = 'block';
+        });
+
+        scoreDisplay.innerText = `Final Score: ${score} / ${quizData.length}`;
+        scoreDisplay.style.display = 'block';
+        submitQuizBtn.style.display = 'none';
+        scoreDisplay.scrollIntoView({ behavior: 'smooth' });
+    };
+</script>
+
+</body>
+</html>

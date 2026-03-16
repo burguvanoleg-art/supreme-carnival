@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Activity Advisor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>City Activity Advisor</h1>
+            <p>Your AI-powered companion for urban exploration</p>
+        </header>
+
+        <main>
+            <section class="search-section">
+                <div class="input-wrapper">
+                    <input type="text" id="queryInput" placeholder="E.g., 'I want to play billiards tomorrow in Chisinau'" autocomplete="off">
+                    <button id="askBtn">
+                        <span class="btn-text">Ask Advisor</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </div>
+            </section>
+
+            <div id="results" class="results-container hidden">
+                <div class="results-grid">
+                    <div class="card weather-card">
+                        <h3>Weather Forecast</h3>
+                        <div id="weatherContent" class="card-content">
+                            <!-- Weather data will be injected here -->
+                        </div>
+                    </div>
+
+                    <div class="card places-card">
+                        <h3>Top Venues</h3>
+                        <div id="placesContent" class="card-content">
+                            <!-- Places will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card recommendation-card">
+                    <h3>AI Recommendation</h3>
+                    <div id="recommendationContent" class="card-content">
+                        <!-- AI text will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorBox" class="error-box hidden"></div>
+        </main>
+
+        <footer>
+            <p>Powered by Google Gemini & Open-Meteo API</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
