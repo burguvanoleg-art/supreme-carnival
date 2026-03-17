@@ -28,7 +28,7 @@ async def serve_frontend():
 
 # Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key={GEMINI_API_KEY}"
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
 
 # Pydantic Models
 class StudyText(BaseModel):
@@ -65,12 +65,30 @@ def call_gemini(prompt: str) -> str:
 @app.post("/simplify")
 async def simplify_text(request: StudyText) -> Dict[str, Any]:
     """
-    Takes complex text and returns a simplified explanation.
+    Takes complex text and returns a simplified explanation point by point, with minimal formatting.
     """
     try:
-        prompt = f"Simplify the following text so a 10-year-old can understand it:\n\n{request.text}"
+        prompt = (
+            f"Explain the main ideas of the following text point by point. "
+            f"Use as little text as possible and avoid any unnecessary symbols like markdown bolding, italics, or complex bullet styles. "
+            f"Just use simple dashes for bullets.\n\nText: {request.text}"
+        )
         simplified = call_gemini(prompt)
-        return {"status": "ok", "data": simplified}
+        # Post-processing to ensure symbols are minimized if the AI missed some
+        clean_text = simplified.replace("**", "").replace("*", "").replace("_", "").replace("#", "").strip()
+        return {"status": "ok", "data": clean_text}
+    except Exception as e:
+        return {"status": "error", "data": str(e)}
+
+@app.post("/explain-like-i-am-5")
+async def explain_like_5(request: StudyText) -> Dict[str, Any]:
+    """
+    Explains the text using very simple language suitable for a 5-year-old.
+    """
+    try:
+        prompt = f"Explain the following text like I am 5 years old. Use very simple analogies and words:\n\n{request.text}"
+        explanation = call_gemini(prompt)
+        return {"status": "ok", "data": explanation}
     except Exception as e:
         return {"status": "error", "data": str(e)}
 

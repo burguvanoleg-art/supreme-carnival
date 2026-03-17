@@ -226,6 +226,10 @@
                 <span class="loading-spinner" id="simplifySpinner"></span>
                 Simplify Text
             </button>
+            <button id="explain5Btn" class="btn-secondary">
+                <span class="loading-spinner" id="explain5Spinner" style="border-top-color: var(--primary);"></span>
+                Explain Like I'm 5
+            </button>
             <button id="quizBtn" class="btn-secondary">
                 <span class="loading-spinner" id="quizSpinner" style="border-top-color: var(--primary);"></span>
                 Take 20-Question Quiz
@@ -295,23 +299,29 @@
         errorBox.style.display = 'block';
     }
 
-    simplifyBtn.onclick = async () => {
+    async function handleSimplifiedRequest(endpoint, title) {
         const text = studyText.value.trim();
         if (!text) return showError('Please paste some text first.');
         
-        const spinner = document.getElementById('simplifySpinner');
+        const spinnerId = endpoint === '/simplify' ? 'simplifySpinner' : 'explain5Spinner';
+        const btnId = endpoint === '/simplify' ? 'simplifyBtn' : 'explain5Btn';
+        const spinner = document.getElementById(spinnerId);
+        const btn = document.getElementById(btnId);
+
         spinner.style.display = 'block';
-        simplifyBtn.disabled = true;
+        btn.disabled = true;
         errorBox.style.display = 'none';
 
         try {
-            const response = await fetch(`${API_BASE}/simplify`, {
+            const response = await fetch(`${API_BASE}${endpoint}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text })
             });
             const result = await response.json();
             if (result.status === 'ok') {
+                const resultTitle = document.getElementById('resultTitle');
+                resultTitle.innerText = title;
                 resultContent.innerText = result.data;
                 inputCard.style.display = 'none';
                 resultsArea.style.display = 'block';
@@ -324,9 +334,13 @@
             showError('Connection error.');
         } finally {
             spinner.style.display = 'none';
-            simplifyBtn.disabled = false;
+            btn.disabled = false;
         }
-    };
+    }
+
+    simplifyBtn.onclick = () => handleSimplifiedRequest('/simplify', 'Simplified Explanation');
+    const explain5Btn = document.getElementById('explain5Btn');
+    explain5Btn.onclick = () => handleSimplifiedRequest('/explain-like-i-am-5', 'Explained Like You\'re 5');
 
     followUpBtn.onclick = async () => {
         const question = followUpInput.value.trim();
